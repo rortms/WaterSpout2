@@ -9,7 +9,9 @@ function draw() {
     background(50, 89, 100)
     flyer.move();
     flyer.display();
-
-    // Make flyer track touch
 }
 
+// Make flyer track touch
+function mouseDragged() {
+    flyer.trackTouch()
+}

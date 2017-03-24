@@ -35,7 +35,7 @@ function Flyer() {
 	}
 	
 	// Move position
-	this.position = p5.Vector.add(this.velocity,this.position);
+	this.position = this.position.add(this.velocity);
 
 	this.frame_skip++
     }
@@ -50,6 +50,17 @@ function Flyer() {
 	}
     }
 
-    
+    /// Update heading ///
+    this.trackTouch = function() {
+	
+	// Get new heading
+	var heading = p5.Vector.sub(createVector(mouseX, mouseY),
+				    this.position).normalize();
+	
+	var speed = createVector(mouseX-pmouseX, mouseY-pmouseY).mag();
+
+	// Velocity proportional to dragging speed
+	this.velocity = heading.mult(speed);
+    }
     
 };
