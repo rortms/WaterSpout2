@@ -39,10 +39,13 @@ function Orb(orb_rad, drop_rad) {
 
     // For dragging the orb
     this.drag = function() {
-	if (this.hooked) {
-	    this.center = createVector(mouseX,mouseY)
-	    
-	}
+	if (this.hooked) 
+	    this.setCenter(mouseX,mouseY);
+    }
+    
+    // Set Orb's center
+    this.setCenter = function (x, y) {
+	this.center = createVector(x,y);
     }
 
     

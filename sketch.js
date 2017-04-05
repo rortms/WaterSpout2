@@ -31,4 +31,5 @@ function mouseClicked() {
 
 function mouseReleased() {
     orb.hooked = false;
+    orb.setCenter(width/2, height/2);
 }
