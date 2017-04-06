@@ -4,12 +4,11 @@ var orb;
 function setup() {
     createCanvas(800, 640);
     flyer = new Flyer();
-    orb = new Orb(createVector(width, height).mag() * 0.8,
-    		  createVector(width, height).mag() * 0.04);
+    orb = new Orb(18);
 }
 
 function draw() {
-    background(50, 89, 100);
+    background(50, 89, 100);    
     orb.displayOrb()
     flyer.move();
     flyer.displayFlyer();
@@ -32,4 +31,5 @@ function mouseClicked() {
 function mouseReleased() {
     orb.hooked = false;
     orb.setCenter(width/2, height/2);
+    orb.resetOrb();
 }

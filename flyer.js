@@ -47,7 +47,6 @@ function Flyer() {
 	ellipse(this.position.x, this.position.y, this.D, this.D);
 	for (var i=0; i<3; i++) {
 	    var d = this.D*pow(0.8, i+1);
-	    //noStroke()
 	    ellipse(this.tail[i].x, this.tail[i].y, d, d);
 	}
     }

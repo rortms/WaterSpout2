@@ -1,52 +1,86 @@
 /// Orb Class
 
-function Orb(orb_rad, drop_rad) {
 
-    // Orb Geometry
-    this.orbD = p5.Vector.mag(createVector(width,height)) * 0.4  // Scale diameter
+function Orb(num_drops) {
     
-    this.Orb_rad = orb_rad;                       //Orbs Radius
-    this.drop_rad = drop_rad;                     //Radius of each drop
-    this.center = createVector(width/2, height/2);//Default Orb center
+    /////// Orb Parameters ////////
+    this.orb_D = p5.Vector.mag(createVector(width,height)) * 0.4; // Scale diameter
+    this.num_drops = num_drops;                                   // Number of drops
+    this.orb_rad = this.orb_D / 2;                                // Orbs Radius
+    this.drop_D = TWO_PI * this.orb_rad / num_drops;              // Adjusts with number of drops
+    this.center = createVector(width/2, height/2);                // Default Orb center
+
+    // Initialize drops
+    this.drop_pos = [];
+    for (var i = 0; i <=num_drops; i++) {
+	
+    	this.drop_pos.push(createVector(this.orb_rad * cos(TWO_PI / num_drops * i),
+    					this.orb_rad * sin(TWO_PI / num_drops * i)).add(this.center));
+    }
 
     // Movement
     this.hooked = false
-
+    this.drag_start = createVector(0,0);
     
     //Drop state: ON/OFF
-    console.log(this.Orb_rad, this.drop_rad);
+    ///console.log("OrbR, dropR"+this.orb_rad, this.drop_D);
 
+
+    /////// Orb Methods  ////////
+    
     /// Paint It ///
     this.displayOrb = function(){
-	noFill()	
-	stroke('#42A5f5')
-	strokeWeight(this.orbD * 0.02)
-	ellipse(this.center.x, this.center.y,
-		this.orbD, this.orbD);
-
+	// Update drops
+	if (this.hooked) {
+	    for (var i = 0; i <=num_drops; i++) {
+		
+    		this.drop_pos[i] = (createVector(this.orb_rad * cos(TWO_PI / num_drops * i),
+    						 this.orb_rad * sin(TWO_PI / num_drops * i)).add(this.center));
+	    }
+	}
 	
-	console.log("Big D: " + this.orbD);
+	for (let pos of this.drop_pos)  {
+	    noStroke();
+	    fill('#FFFFFF');
+	    ellipse(pos.x, pos.y, this.drop_D, this.drop_D);
+	}
+	///console.log("Big D: " + this.orb_D);
     }
 
-    // For grabbing the orb
+    /// For grabbing the orb ///
     this.isHooked = function() {
 	var eps = 10
 	var dist2_center = p5.Vector.dist(this.center,createVector(mouseX,mouseY));
-	if ( abs(dist2_center - this.orbD / 2) < eps )
+	if ( abs(dist2_center - this.orb_D / 2) < eps )
 	    return true;
 	return false;
     }
 
-    // For dragging the orb
+    /// For dragging the orb ///
     this.drag = function() {
-	if (this.hooked) 
-	    this.setCenter(mouseX,mouseY);
+	if (this.hooked) {
+	    var translation = createVector(mouseX,mouseY).sub(this.drag_start);
+	    this.center = createVector(width/2,height/2).add(translation);
+	    //this.setCenter();
+	}
     }
     
-    // Set Orb's center
+    /// Recet to initial position ///
+    this.resetOrb = function() {
+	this.drag_start = createVector(0,0);
+				       
+	for (var i = 0; i <=num_drops; i++) {
+    	    this.drop_pos[i] = (createVector(this.orb_rad * cos(TWO_PI / num_drops * i),
+    					     this.orb_rad * sin(TWO_PI / num_drops * i)).add(this.center));
+	    }
+	
+    }
+    
+    /// Set Orb's center ///
     this.setCenter = function (x, y) {
 	this.center = createVector(x,y);
     }
 
     
 }
+
