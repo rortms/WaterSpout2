@@ -38,11 +38,13 @@ function Orb(num_drops) {
     						 this.orb_rad * sin(TWO_PI / num_drops * i)).add(this.center));
 	    }
 	}
+
+	var vary_D = this.drop_D + this.drop_D * 0.08 * random(-1,1);
 	
 	for (let pos of this.drop_pos)  {
 	    noStroke();
 	    fill('#FFFFFF');
-	    ellipse(pos.x, pos.y, this.drop_D, this.drop_D);
+	    ellipse(pos.x, pos.y, vary_D, vary_D);
 	}
 	///console.log("Big D: " + this.orb_D);
     }
