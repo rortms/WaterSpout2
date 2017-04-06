@@ -1,5 +1,5 @@
 /// Flyer Class 
-function Flyer() {
+function Flyer(color) {
     
     /////////// Iitialize flyer ////////////
     this.position = createVector(width/2,height/2);
@@ -11,7 +11,8 @@ function Flyer() {
     	this.tail.push(createVector(width/2, height/2));
     }
     
-    this.D = p5.Vector.mag(createVector(width,height)) * 0.035  // Flyer's diameter to scale
+    this.D = p5.Vector.mag(createVector(width,height)) * 0.035;  // Flyer's diameter to scale
+    this.color = color;
     
     this.pcount =0;
     this.frame_skip =0;
@@ -43,7 +44,7 @@ function Flyer() {
     //// Paint it ////
     this.displayFlyer = function() {
 	noStroke()
-	fill('#FFFFFF')
+	fill(this.color)
 	ellipse(this.position.x, this.position.y, this.D, this.D);
 	for (var i=0; i<3; i++) {
 	    var d = this.D*pow(0.8, i+1);

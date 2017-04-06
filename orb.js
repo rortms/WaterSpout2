@@ -1,7 +1,7 @@
 /// Orb Class
 
 
-function Orb(num_drops) {
+function Orb(num_drops, color) {
     
     /////// Orb Parameters ////////
     this.orb_D = p5.Vector.mag(createVector(width,height)) * 0.4; // Scale diameter
@@ -9,6 +9,7 @@ function Orb(num_drops) {
     this.orb_rad = this.orb_D / 2;                                // Orbs Radius
     this.drop_D = TWO_PI * this.orb_rad / num_drops;              // Adjusts with number of drops
     this.center = createVector(width/2, height/2);                // Default Orb center
+    this.color = color;
 
     // Initialize drops
     this.drop_pos = [];
@@ -43,7 +44,7 @@ function Orb(num_drops) {
 	
 	for (let pos of this.drop_pos)  {
 	    noStroke();
-	    fill('#FFFFFF');
+	    fill(this.color);
 	    ellipse(pos.x, pos.y, vary_D, vary_D);
 	}
 	///console.log("Big D: " + this.orb_D);
@@ -63,7 +64,6 @@ function Orb(num_drops) {
 	if (this.hooked) {
 	    var translation = createVector(mouseX,mouseY).sub(this.drag_start);
 	    this.center = createVector(width/2,height/2).add(translation);
-	    //this.setCenter();
 	}
     }
     
