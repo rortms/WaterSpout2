@@ -26,9 +26,11 @@ console.log(colors.yellow);
 function setup() {
     createCanvas(800, 640);
     flyer = new Flyer(colors.green);
-    orbs.push(new Orb(20, colors.yellow, 0.5));
+    orbs.push(new Orb(20, colors.red, 0.7));    
+    orbs.push(new Orb(20, colors.burnt_orange, 0.5));
     orbs.push(new Orb(20, colors.light_blue, 0.3));
     orbs.push(new Orb(20, colors.lime, 0.2));
+    orbs.push(new Orb(20, colors.green, 0.1));
     
 }
 
