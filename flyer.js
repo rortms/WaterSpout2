@@ -19,7 +19,7 @@ function Flyer(color) {
 
     //// Move it ////
     this.move = function() {
-	var eps = 10
+	var eps = this.D * 0.4
 	// Store passed position
 	if (this.frame_skip%4 == 0) {
 	    this.tail[this.pcount%3] =

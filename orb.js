@@ -1,14 +1,14 @@
 /// Orb Class
 
 
-function Orb(num_drops, color) {
+function Orb(num_drops, color, scale) {
     
     /////// Orb Parameters ////////
-    this.orb_D = p5.Vector.mag(createVector(width,height)) * 0.4; // Scale diameter
-    this.num_drops = num_drops;                                   // Number of drops
-    this.orb_rad = this.orb_D / 2;                                // Orbs Radius
-    this.drop_D = TWO_PI * this.orb_rad / num_drops;              // Adjusts with number of drops
-    this.center = createVector(width/2, height/2);                // Default Orb center
+    this.orb_D = p5.Vector.mag(createVector(width,height)) * scale; // Scale diameter
+    this.num_drops = num_drops;                                     // Number of drops
+    this.orb_rad = this.orb_D / 2;                                  // Orbs Radius
+    this.drop_D = TWO_PI * this.orb_rad / num_drops;                // Adjusts with number of drops
+    this.center = createVector(width/2, height/2);                  // Default Orb center
     this.color = color;
 
     // Initialize drops    

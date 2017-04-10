@@ -1,5 +1,6 @@
 var flyer; // Declare object
-var orb;
+var orbs = []
+
 
 colors = { red : "#F44336",
 	   pink: "#E91E63",
@@ -25,12 +26,18 @@ console.log(colors.yellow);
 function setup() {
     createCanvas(800, 640);
     flyer = new Flyer(colors.green);
-    orb = new Orb(20, colors.light_blue);
+    orbs.push(new Orb(20, colors.yellow, 0.5));
+    orbs.push(new Orb(20, colors.light_blue, 0.3));
+    orbs.push(new Orb(20, colors.lime, 0.2));
+    
 }
 
 function draw() {
+    //console.log(millis());
     background(colors.black);
-    orb.displayOrb()
+    for (let orb of orbs) {    
+	orb.displayOrb();
+    }
     flyer.move();
     flyer.displayFlyer();
 }
@@ -39,23 +46,29 @@ function draw() {
 function mouseDragged() {
     // Make flyer track touch
     flyer.trackTouch();
-    console.log(orb.hooked);
-    orb.drag()
+    // console.log(orb.hooked);
+    for (let orb of orbs) {
+	orb.drag();
+    }
 }
 
 function mouseClicked() {
     // (double) click to hook orb
-    if (orb.isHooked()) {
-	orb.hooked = true;
-	orb.drag_start = createVector(mouseX,mouseY);
-    }
+    for (let orb of orbs) {
+	if (orb.isHooked()) {
+	    orb.hooked = true;
+	    orb.drag_start = createVector(mouseX,mouseY);
+	}
 
-    // Activate drop
-    orb.activateDrop();
+	// Activate drop
+	orb.activateDrop();
+    }
 }
 
 function mouseReleased() {
-    orb.hooked = false;
-    orb.setCenter(width/2, height/2);
-    orb.resetOrb();
+    for (let orb of orbs) {    
+	orb.hooked = false;
+	orb.setCenter(width/2, height/2);
+	orb.resetOrb();
+    }
 }
