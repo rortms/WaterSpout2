@@ -1,6 +1,6 @@
-var flyer; // Declare object
-var orbs = []
-
+// Declare objects
+var flyers = []; 
+var orbs = [];
 
 colors = { red : "#F44336",
 	   pink: "#E91E63",
@@ -20,35 +20,47 @@ colors = { red : "#F44336",
 	   white: "#FFFFFF",
 	   grey: "#607D8B",
 	 };
-	   
+
+c_kys = Object.keys(colors);
 console.log(colors.yellow);
 
 function setup() {
     createCanvas(800, 640);
-    flyer = new Flyer(colors.green);
-    orbs.push(new Orb(20, colors.red, 0.7));    
+    
+    flyers.push(new Flyer(colors.green));
+    flyers.push(new Flyer(colors[c_kys[randInt(0,17)]]));
+    flyers.push(new Flyer(colors[c_kys[randInt(0,17)]]));
+    
+    //orbs.push(new Orb(20, colors.red, 0.7));    
     orbs.push(new Orb(20, colors.burnt_orange, 0.5));
-    orbs.push(new Orb(20, colors.light_blue, 0.3));
-    orbs.push(new Orb(20, colors.lime, 0.2));
-    orbs.push(new Orb(20, colors.green, 0.1));
+    orbs.push(new Orb(20, colors.light_blue, 0.35));
+    orbs.push(new Orb(20, colors.lime, 0.22));
+    //orbs.push(new Orb(20, colors.green, 0.1));
     
 }
 
 function draw() {
     //console.log(millis());
     background(colors.black);
+    // Draw orbs
     for (let orb of orbs) {    
 	orb.displayOrb();
     }
-    flyer.move();
-    flyer.displayFlyer();
+    // Draw flyers
+    for (let flyer of flyers) {
+	flyer.move();
+	flyer.displayFlyer();
+    }
 }
 
 
 function mouseDragged() {
-    // Make flyer track touch
-    flyer.trackTouch();
-    // console.log(orb.hooked);
+    // Make flyers track touch
+    for (let flyer of flyers) {
+	flyer.trackTouch();
+    }
+    
+    // Have orbs be dragged
     for (let orb of orbs) {
 	orb.drag();
     }
