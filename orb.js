@@ -83,7 +83,7 @@ function Orb(num_drops, color, scale) {
 	var eps = this.drop_D * 0.20;
 	var x = mouseX;
 	var y = mouseY;
-	for ( var i = 0; i < this.num_drops; i++) {
+	for ( var i = 0; i <= this.num_drops; i++) {
 	    if ( this.drop_pos[i].dist(createVector(x,y)) < eps) {
 		this.drop_clicked[i] = ! this.drop_clicked[i]
 		console.log(x,y)
@@ -98,7 +98,7 @@ function Orb(num_drops, color, scale) {
 	for (var i = 0; i <=num_drops; i++) {
     	    this.drop_pos[i] = (createVector(this.orb_rad * cos(TWO_PI / num_drops * i),
     					     this.orb_rad * sin(TWO_PI / num_drops * i)).add(this.center));
-	    }
+	}
 	
     }
     
