@@ -61,7 +61,7 @@ function Flyer(color) {
 	noStroke()
 	fill(this.color)
 	ellipse(this.position.x, this.position.y, this.D, this.D);
-	for (var i=0; i<3; i++) {
+	for (var i=0; i<this.tail_length; i++) {
 	    var d = this.D*pow(0.8, i+1);
 	    ellipse(this.tail[i].x, this.tail[i].y, d, d);
 	}

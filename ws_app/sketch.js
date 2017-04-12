@@ -26,7 +26,7 @@ colors = { red : "#F44336",
 // Convenience color key array 
 c_kys = Object.keys(colors);
 
-// Load Percussion 
+// Load Percussion files
 function preload() {
     
     beat1 = loadSound('assets/beat1.wav');
@@ -46,16 +46,22 @@ function preload() {
 var flyers = []; 
 var orbs = [];
 
+// Time control
+var fps = 60;       // Frames per second
+var beat_time = 60; // beat every n frames
+
+
 //////////////////////////////////
 // Initialize sketch 
 function setup() {
     createCanvas(800, 640);
+    frameRate(fps);
     
     flyers.push(new Flyer(colors.green));
     flyers.push(new Flyer(colors[c_kys[randInt(0,17)]]));
     flyers.push(new Flyer(colors[c_kys[randInt(0,17)]]));
     
-    //orbs.push(new Orb(20, colors.red, 0.7));    
+    //orbs.push(new Orb(20, colors.red, 0.7));
     orbs.push(new Orb(20, colors.burnt_orange, 0.5));
     orbs.push(new Orb(20, colors.light_blue, 0.35));
     orbs.push(new Orb(20, colors.lime, 0.22));
@@ -111,7 +117,7 @@ function mouseClicked() {
 };
 
 function mouseReleased() {
-    for (let orb of orbs) {    
+    for (let orb of orbs) {
 	orb.hooked = false;
 	orb.setCenter(width/2, height/2);
 	orb.resetOrb();

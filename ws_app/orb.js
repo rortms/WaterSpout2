@@ -26,6 +26,9 @@ function Orb(num_drops, color, scale) {
     // Movement
     this.hooked = false
     this.drag_start = createVector(0,0);
+
+    // Position of drop in beat
+    this.drop_in_beat = 0
     
     /////////////////////////////////////////////
 
@@ -34,7 +37,8 @@ function Orb(num_drops, color, scale) {
     
     /// Paint Orb ///
     this.displayOrb = function(){
-	// Update drops
+			
+	// Move drop positions when being dragged
 	if (this.hooked) {
 	    for (var i = 0; i <=num_drops; i++) {
 		
@@ -43,21 +47,36 @@ function Orb(num_drops, color, scale) {
 	    }
 	}
 
+	// Pulse drop radius
 	var vary_D = this.drop_D + this.drop_D * 0.08 * random(-1,1);
-	
-	//for (let pos of this.drop_pos)  {
+
+	// Draw all drops 
 	for (var i = 0; i <=num_drops; i++) {
 	    pos = this.drop_pos[i]
 	    noStroke();
-	    if ( ! this.drop_clicked[i] ){
-		fill(this.color);
-		ellipse(pos.x, pos.y, vary_D, vary_D);
-	    } else {
+
+	    // Drop in beat is solid white
+	    if (i == floor(this.drop_in_beat) % num_drops){
 		fill(colors.white);
-		ellipse(pos.x, pos.y, this.drop_D * 0.5, this.drop_D * 0.5);
+		ellipse(pos.x, pos.y, vary_D, vary_D);
+	    }else{
+		
+		if ( ! this.drop_clicked[i] ){
+		    fill(this.color);
+		    ellipse(pos.x, pos.y, vary_D, vary_D);
+
+		// Clicked drop is shrunken and solid white
+		}else{		    
+		    fill(colors.white);
+		    ellipse(pos.x, pos.y, this.drop_D * 0.5, this.drop_D * 0.5);}
 	    }
-	}
-	///console.log("Big D: " + this.orb_D);
+
+
+	// Update drop in beat gradually over duration of beat
+	this.drop_in_beat += 1/beat_time;
+	    
+	} //end for
+
     };
 
     /// For Grabbing the orb ///
