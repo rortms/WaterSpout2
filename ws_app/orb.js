@@ -1,9 +1,10 @@
-/// Orb Class
-
+////////////////////////////////////
+//          Orb Class
+////////////////////////////////////
 
 function Orb(num_drops, color, scale) {
     
-    /////// Orb Parameters ////////
+    /////// Initialize Orb Parameters ////////
     this.orb_D = p5.Vector.mag(createVector(width,height)) * scale; // Scale diameter
     this.num_drops = num_drops;                                     // Number of drops
     this.orb_rad = this.orb_D / 2;                                  // Orbs Radius
@@ -26,13 +27,12 @@ function Orb(num_drops, color, scale) {
     this.hooked = false
     this.drag_start = createVector(0,0);
     
-    //Drop state: ON/OFF
-    ///console.log("OrbR, dropR"+this.orb_rad, this.drop_D);
+    /////////////////////////////////////////////
 
 
-    /////// Orb Methods  ////////
     
-    /// Paint It ///
+    
+    /// Paint Orb ///
     this.displayOrb = function(){
 	// Update drops
 	if (this.hooked) {
@@ -60,7 +60,7 @@ function Orb(num_drops, color, scale) {
 	///console.log("Big D: " + this.orb_D);
     };
 
-    /// For grabbing the orb ///
+    /// For Grabbing the orb ///
     this.isHooked = function() {
 	var eps = this.drop_D / 2 
 	var dist2_center = p5.Vector.dist(this.center,createVector(mouseX,mouseY));
@@ -70,7 +70,7 @@ function Orb(num_drops, color, scale) {
 	return false;
     };
 
-    /// For dragging the orb ///
+    /// For Dragging the orb ///
     this.drag = function() {
 	if (this.hooked) {
 	    var translation = createVector(mouseX,mouseY).sub(this.drag_start);
@@ -78,7 +78,7 @@ function Orb(num_drops, color, scale) {
 	}
     };
 
-    /// Set Drop to active
+    /// Set drop to active
     this.activateDrop = function (){
 	var eps = this.drop_D * 0.20;
 	var x = mouseX;
@@ -91,7 +91,7 @@ function Orb(num_drops, color, scale) {
 	}
     };
     
-    /// Recet to initial position ///
+    /// Reset to initial position
     this.resetOrb = function() {
 	this.drag_start = createVector(0,0);
 				       

@@ -1,7 +1,9 @@
-// Declare objects
-var flyers = []; 
-var orbs = [];
+////////////////////////////////////
+//          Main Sketch
+////////////////////////////////////
 
+
+// Color pallette
 colors = { red : "#F44336",
 	   pink: "#E91E63",
 	   purple: "#9C27B0",
@@ -21,6 +23,9 @@ colors = { red : "#F44336",
 	   grey: "#607D8B",
 	 };
 
+// Convenience color key array 
+c_kys = Object.keys(colors);
+
 // Load Percussion 
 function preload() {
     
@@ -35,11 +40,14 @@ function preload() {
     snare1 = loadSound('assets/snare1.wav');
     snare2 = loadSound('assets/snare2.wav');
 
-}
+};
 
-c_kys = Object.keys(colors);
-console.log(colors.yellow);
+// Declare objects
+var flyers = []; 
+var orbs = [];
 
+//////////////////////////////////
+// Initialize sketch 
 function setup() {
     createCanvas(800, 640);
     
@@ -56,8 +64,10 @@ function setup() {
     // Test loud sound
     beat1.setVolume(0.3);
     beat1.play();
-}
+};
 
+//////////////////////////////////
+// Animate sketch
 function draw() {
     //console.log(millis());
     background(colors.black);
@@ -70,9 +80,11 @@ function draw() {
 	flyer.move();
 	flyer.displayFlyer();
     }
-}
+};
 
 
+//////////////////////////////////
+// Handle User Interactions
 function mouseDragged() {
     // Make flyers track touch
     for (let flyer of flyers) {
@@ -83,7 +95,7 @@ function mouseDragged() {
     for (let orb of orbs) {
 	orb.drag();
     }
-}
+};
 
 function mouseClicked() {
     // (double) click to hook orb
@@ -96,7 +108,7 @@ function mouseClicked() {
 	// Activate drop
 	orb.activateDrop();
     }
-}
+};
 
 function mouseReleased() {
     for (let orb of orbs) {    
@@ -104,4 +116,4 @@ function mouseReleased() {
 	orb.setCenter(width/2, height/2);
 	orb.resetOrb();
     }
-}
+};

@@ -1,4 +1,8 @@
-/// Flyer Class 
+////////////////////////////////////
+//          Flyer Class
+////////////////////////////////////
+
+
 function Flyer(color) {
     
     /////////// Iitialize flyer ////////////
@@ -16,8 +20,11 @@ function Flyer(color) {
     
     this.pcount =0;
     this.frame_skip =0;
+    /////////////////////////////////////////
 
-    //// Move it ////
+    
+
+    //// Move flyer ///
     this.move = function() {
 	var eps = this.D * 0.4
 	// Store passed position
@@ -39,20 +46,9 @@ function Flyer(color) {
 	this.position = this.position.add(this.velocity);
 
 	this.frame_skip++
-    }
-    
-    //// Paint it ////
-    this.displayFlyer = function() {
-	noStroke()
-	fill(this.color)
-	ellipse(this.position.x, this.position.y, this.D, this.D);
-	for (var i=0; i<3; i++) {
-	    var d = this.D*pow(0.8, i+1);
-	    ellipse(this.tail[i].x, this.tail[i].y, d, d);
-	}
-    }
+    };
 
-    /// Update heading ///
+    /// Update flyer heading ///
     this.trackTouch = function() {
 	
 	// Get new heading
@@ -63,6 +59,18 @@ function Flyer(color) {
 
 	// Velocity proportional to dragging speed
 	this.velocity = heading.mult(speed);
-    }
+    };
     
-};
+    //// Paint flyer ////
+    this.displayFlyer = function() {
+	noStroke()
+	fill(this.color)
+	ellipse(this.position.x, this.position.y, this.D, this.D);
+	for (var i=0; i<3; i++) {
+	    var d = this.D*pow(0.8, i+1);
+	    ellipse(this.tail[i].x, this.tail[i].y, d, d);
+	}
+    };
+
+    
+}
