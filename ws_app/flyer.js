@@ -10,16 +10,14 @@ function Flyer(color) {
     this.velocity = createVector(2, 0)
 	.rotate(random(-PI,PI));
 
+    this.tail_length = 3;
     this.tail = [];
-    for (var i = 0; i<3; i++) {
+    for (var i = 0; i<this.tail_length; i++) {
     	this.tail.push(createVector(width/2, height/2));
     }
     
     this.D = p5.Vector.mag(createVector(width,height)) * 0.035;  // Flyer's diameter to scale
     this.color = color;
-    
-    this.pcount =0;
-    this.frame_skip =0;
     /////////////////////////////////////////
 
     
@@ -28,10 +26,9 @@ function Flyer(color) {
     this.move = function() {
 	var eps = this.D * 0.4
 	// Store passed position
-	if (this.frame_skip%4 == 0) {
-	    this.tail[this.pcount%3] =
+	if (frameCount%4 == 0) {
+	    this.tail[frameCount%this.tail_length] =
 		createVector(this.position.x,this.position.y);
-	    this.pcount++;
 	}
 
 	// Collision detection
@@ -44,8 +41,6 @@ function Flyer(color) {
 	
 	// Move position
 	this.position = this.position.add(this.velocity);
-
-	this.frame_skip++
     };
 
     /// Update flyer heading ///
