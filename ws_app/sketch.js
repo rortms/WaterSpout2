@@ -29,7 +29,7 @@ c_kys = Object.keys(colors);
 // Load Percussion files
 function preload() {
     
-    beat1 = loadSound('assets/beat1.wav');
+    beat1 = loadSound('assets/beat1.wav')
     beat2 = loadSound('assets/beat2.wav');
     clap = loadSound('assets/clap.wav');
     crash1 = loadSound('assets/crash1.wav');
@@ -62,14 +62,14 @@ function setup() {
     flyers.push(new Flyer(colors[c_kys[randInt(0,17)]]));
     
     //orbs.push(new Orb(20, colors.red, 0.7));
-    orbs.push(new Orb(20, colors.burnt_orange, 0.5));
-    orbs.push(new Orb(20, colors.light_blue, 0.35));
-    orbs.push(new Orb(20, colors.lime, 0.22));
+    orbs.push(new Orb(beat1,  20, colors.burnt_orange, 0.5));
+    orbs.push(new Orb(snare2, 20, colors.light_blue, 0.35));
+    orbs.push(new Orb(clap,   20, colors.lime, 0.22));
     //orbs.push(new Orb(20, colors.green, 0.1));
 
     // Test loud sound
-    beat1.setVolume(0.3);
-    beat1.play();
+    // beat1.setVolume(0.3);
+    // beat1.play();
 };
 
 //////////////////////////////////

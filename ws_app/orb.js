@@ -2,25 +2,34 @@
 //          Orb Class
 ////////////////////////////////////
 
-function Orb(num_drops, color, scale) {
+function Orb(beat_sound, num_drops, color, scale) {
     
     /////// Initialize Orb Parameters ////////
+    
+    // Dimensions
     this.orb_D = p5.Vector.mag(createVector(width,height)) * scale; // Scale diameter
     this.num_drops = num_drops;                                     // Number of drops
     this.orb_rad = this.orb_D / 2;                                  // Orbs Radius
     this.drop_D = TWO_PI * this.orb_rad / num_drops;                // Adjusts with number of drops
     this.center = createVector(width/2, height/2);                  // Default Orb center
+    
+    // Color
     this.color = color;
-
+    
+    // Sound
+    this.beat_sound = beat_sound;
+    //this.beat_sound.playMode('restart');
+    
     // Initialize drops    
     this.drop_pos = [];     // position array
-    this.drop_clicked= [];  // 
+    this.drop_active= [];   //
     
     for (var i = 0; i <=num_drops; i++) {
 	
 	this.drop_pos.push(createVector(this.orb_rad * cos(TWO_PI / num_drops * i) ,
 					this.orb_rad * sin(TWO_PI / num_drops * i)).add(this.center));
-	this.drop_clicked[i] = false;
+	
+	this.drop_active[i] = false;
     }
 
     // Movement
@@ -29,11 +38,9 @@ function Orb(num_drops, color, scale) {
 
     // Position of drop in beat
     this.drop_in_beat = 0
-    
     /////////////////////////////////////////////
 
 
-    
     
     /// Paint Orb ///
     this.displayOrb = function(){
@@ -54,14 +61,21 @@ function Orb(num_drops, color, scale) {
 	for (var i = 0; i <=num_drops; i++) {
 	    pos = this.drop_pos[i]
 	    noStroke();
-
-	    // Drop in beat is solid white
+	    
+	    ////////////////////////////////////////////
+	    ////  Process drop that is in beat
 	    if (i == floor(this.drop_in_beat) % num_drops){
 		fill(colors.white);
 		ellipse(pos.x, pos.y, vary_D, vary_D);
+
+		if (this.drop_active[i])
+		    beat_sound.play();
+
+
+            ////////////////////////////////////////
 	    }else{
 		
-		if ( ! this.drop_clicked[i] ){
+		if ( ! this.drop_active[i] ){
 		    fill(this.color);
 		    ellipse(pos.x, pos.y, vary_D, vary_D);
 
@@ -104,7 +118,7 @@ function Orb(num_drops, color, scale) {
 	var y = mouseY;
 	for ( var i = 0; i <= this.num_drops; i++) {
 	    if ( this.drop_pos[i].dist(createVector(x,y)) < eps) {
-		this.drop_clicked[i] = ! this.drop_clicked[i]
+		this.drop_active[i] = ! this.drop_active[i]
 		console.log(x,y)
 	    }
 	}
