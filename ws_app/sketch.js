@@ -48,7 +48,7 @@ var orbs = [];
 
 // Time control
 var fps = 60;       // Frames per second
-var beat_time = 60; // beat every n frames
+var beat_time = 6;  // beat every n frames
 
 
 //////////////////////////////////
@@ -62,14 +62,10 @@ function setup() {
     flyers.push(new Flyer(colors[c_kys[randInt(0,17)]]));
     
     //orbs.push(new Orb(20, colors.red, 0.7));
-    orbs.push(new Orb(drum_sounds['beat1'],  20, colors.burnt_orange, 0.5));
-    orbs.push(new Orb(drum_sounds['snare2'], 20, colors.light_blue, 0.35));
-    orbs.push(new Orb(drum_sounds['clap'],   20, colors.lime, 0.22));
+    orbs.push(new Orb(drum_sounds['beat1'],  24, colors.burnt_orange, 0.5));
+    orbs.push(new Orb(drum_sounds['snare2'], 24, colors.light_blue, 0.35));
+    orbs.push(new Orb(drum_sounds['clap'],   24, colors.lime, 0.22));
 
-
-    // Test loud sound
-    // beat1.setVolume(0.3);
-    // beat1.play();
 };
 
 //////////////////////////////////

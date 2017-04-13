@@ -20,9 +20,9 @@ function Orb(sound_filename, num_drops, color, scale) {
     //this.beat_sound = beat_sound;
     //this.beat_sound.playMode('restart');
     
-    // Initialize drops    
+    // Initialize drops
     this.drop_pos = [];     // position array
-    this.drops= [];   //
+    this.drops= [];
     console.log(sound_filename);
     for (var i = 0; i <=num_drops; i++) {
 
@@ -46,7 +46,10 @@ function Orb(sound_filename, num_drops, color, scale) {
     
     /// Paint Orb ///
     this.displayOrb = function(){
-			
+	
+	// Update drop in beat gradually over duration of beat
+	this.drop_in_beat += 1/beat_time;
+	
 	// Move drop positions when being dragged
 	if (this.hooked) {
 	    for (var i = 0; i <=num_drops; i++) {
@@ -65,7 +68,7 @@ function Orb(sound_filename, num_drops, color, scale) {
 	    noStroke();
 	    
 	    ////////////////////////////////////////////
-	    ////  Process drop that is in beat
+	    //      Process drop that is in beat
 	    if (i == floor(this.drop_in_beat) % num_drops){
 		fill(colors.white);
 		ellipse(pos.x, pos.y, vary_D, vary_D);
@@ -75,8 +78,9 @@ function Orb(sound_filename, num_drops, color, scale) {
 			this.drops[i]['sound'].play();
 		}
 
-            ////////////////////////////////////////
-	    }else{
+	    ////////////////////////////////////////////
+		
+	    }else{ /// Just draw the drop
 		
 		if ( ! this.drops[i]['active'] ){
 		    fill(this.color);
@@ -89,9 +93,6 @@ function Orb(sound_filename, num_drops, color, scale) {
 	    }
 
 
-	// Update drop in beat gradually over duration of beat
-	this.drop_in_beat += 1/beat_time;
-	    
 	} //end for
 
     };
@@ -142,6 +143,4 @@ function Orb(sound_filename, num_drops, color, scale) {
 	this.center = createVector(x,y);
     };
 
-    
 }
-
