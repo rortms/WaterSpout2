@@ -26,19 +26,19 @@ colors = { red : "#F44336",
 // Convenience color key array 
 c_kys = Object.keys(colors);
 
-// Load Percussion files
-function preload() {
+// Percussion file names
+drum_sounds = {
     
-    beat1 = loadSound('assets/beat1.wav')
-    beat2 = loadSound('assets/beat2.wav');
-    clap = loadSound('assets/clap.wav');
-    crash1 = loadSound('assets/crash1.wav');
-    crash2 = loadSound('assets/crash2.wav');
-    hh1 = loadSound('assets/hh1.wav');
-    hh2 = loadSound('assets/hh2.wav');
-    kick = loadSound('assets/kick.wav');
-    snare1 = loadSound('assets/snare1.wav');
-    snare2 = loadSound('assets/snare2.wav');
+    beat1 : 'assets/beat1.wav',
+    beat2 : 'assets/beat2.wav',
+    clap : 'assets/clap.wav',
+    crash1 : 'assets/crash1.wav',
+    crash2 : 'assets/crash2.wav',
+    hh1 : 'assets/hh1.wav',
+    hh2 : 'assets/hh2.wav',
+    kick : 'assets/kick.wav',
+    snare1 : 'assets/snare1.wav',
+    snare2 : 'assets/snare2.wav',
 
 };
 
@@ -62,10 +62,10 @@ function setup() {
     flyers.push(new Flyer(colors[c_kys[randInt(0,17)]]));
     
     //orbs.push(new Orb(20, colors.red, 0.7));
-    orbs.push(new Orb(beat1,  20, colors.burnt_orange, 0.5));
-    orbs.push(new Orb(snare2, 20, colors.light_blue, 0.35));
-    orbs.push(new Orb(clap,   20, colors.lime, 0.22));
-    //orbs.push(new Orb(20, colors.green, 0.1));
+    orbs.push(new Orb(drum_sounds['beat1'],  20, colors.burnt_orange, 0.5));
+    orbs.push(new Orb(drum_sounds['snare2'], 20, colors.light_blue, 0.35));
+    orbs.push(new Orb(drum_sounds['clap'],   20, colors.lime, 0.22));
+
 
     // Test loud sound
     // beat1.setVolume(0.3);

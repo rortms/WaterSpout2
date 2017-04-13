@@ -2,7 +2,7 @@
 //          Orb Class
 ////////////////////////////////////
 
-function Orb(beat_sound, num_drops, color, scale) {
+function Orb(sound_filename, num_drops, color, scale) {
     
     /////// Initialize Orb Parameters ////////
     
@@ -17,20 +17,22 @@ function Orb(beat_sound, num_drops, color, scale) {
     this.color = color;
     
     // Sound
-    this.beat_sound = beat_sound;
+    //this.beat_sound = beat_sound;
     //this.beat_sound.playMode('restart');
     
     // Initialize drops    
     this.drop_pos = [];     // position array
-    this.drop_active= [];   //
-    
+    this.drops= [];   //
+    console.log(sound_filename);
     for (var i = 0; i <=num_drops; i++) {
-	
+
 	this.drop_pos.push(createVector(this.orb_rad * cos(TWO_PI / num_drops * i) ,
 					this.orb_rad * sin(TWO_PI / num_drops * i)).add(this.center));
 	
-	this.drop_active[i] = false;
+	this.drops[i] = {'active': false, 'sound': loadSound(sound_filename)};
+	
     }
+
 
     // Movement
     this.hooked = false
@@ -68,19 +70,20 @@ function Orb(beat_sound, num_drops, color, scale) {
 		fill(colors.white);
 		ellipse(pos.x, pos.y, vary_D, vary_D);
 
-		if (this.drop_active[i])
-		    beat_sound.play();
-
+		if (this.drops[i]['active']){
+		    if (!this.drops[i]['sound'].isPlaying())
+			this.drops[i]['sound'].play();
+		}
 
             ////////////////////////////////////////
 	    }else{
 		
-		if ( ! this.drop_active[i] ){
+		if ( ! this.drops[i]['active'] ){
 		    fill(this.color);
 		    ellipse(pos.x, pos.y, vary_D, vary_D);
 
 		// Clicked drop is shrunken and solid white
-		}else{		    
+		}else{
 		    fill(colors.white);
 		    ellipse(pos.x, pos.y, this.drop_D * 0.5, this.drop_D * 0.5);}
 	    }
@@ -118,7 +121,7 @@ function Orb(beat_sound, num_drops, color, scale) {
 	var y = mouseY;
 	for ( var i = 0; i <= this.num_drops; i++) {
 	    if ( this.drop_pos[i].dist(createVector(x,y)) < eps) {
-		this.drop_active[i] = ! this.drop_active[i]
+		this.drops[i]['active'] = ! this.drops[i]['active']
 		console.log(x,y)
 	    }
 	}
