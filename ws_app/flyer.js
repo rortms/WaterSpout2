@@ -3,20 +3,20 @@
 ////////////////////////////////////
 
 
-function Flyer(color) {
+function Flyer(color, size) {
     
     /////////// Iitialize flyer ////////////
-    this.position = createVector(width/2,height/2);
+    this.position = createVector(main_width/2,main_height/2);
     this.velocity = createVector(2, 0)
 	.rotate(random(-PI,PI));
 
     this.tail_length = 3;
     this.tail = [];
     for (var i = 0; i<this.tail_length; i++) {
-    	this.tail.push(createVector(width/2, height/2));
+    	this.tail.push(createVector(main_width/2, main_height/2));
     }
     
-    this.D = p5.Vector.mag(createVector(width,height)) * 0.035;  // Flyer's diameter to scale
+    this.D = p5.Vector.mag(createVector(size, size)) * 0.035;  // Flyer's diameter to scale
     this.color = color;
     /////////////////////////////////////////
 

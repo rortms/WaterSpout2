@@ -2,23 +2,23 @@
 //          Orb Class
 ////////////////////////////////////
 
-function Orb(sound_filename, num_drops, color, scale) {
+function Orb(sound_filename, num_drops, sector_x, sector_y, sector_size, scale, color) {
     
     /////// Initialize Orb Parameters ////////
     
     // Dimensions
-    this.orb_D = p5.Vector.mag(createVector(width,height)) * scale; // Scale diameter
-    this.num_drops = num_drops;                                     // Number of drops
-    this.orb_rad = this.orb_D / 2;                                  // Orbs Radius
-    this.drop_D = TWO_PI * this.orb_rad / num_drops;                // Adjusts with number of drops
-    this.center = createVector(width/2, height/2);                  // Default Orb center
+    this.orb_D = p5.Vector.mag(createVector(sector_size,sector_size)) * scale; // Scale diameter
+    
+    this.num_drops = num_drops;                        // Number of drops
+    this.orb_rad = this.orb_D / 2;                     // Orbs Radius
+    this.drop_D = TWO_PI * this.orb_rad / num_drops;   // Adjusts with number of drops
+    this.center = createVector(sector_x, sector_y);    // Variable Orb center
+    
+    this.default_x = sector_x;                         // Default center
+    this.default_y = sector_y;                         //
     
     // Color
     this.color = color;
-    
-    // Sound
-    //this.beat_sound = beat_sound;
-    //this.beat_sound.playMode('restart');
     
     // Initialize drops
     this.drop_pos = [];     // position array
@@ -33,7 +33,6 @@ function Orb(sound_filename, num_drops, color, scale) {
 	
     }
 
-
     // Movement
     this.hooked = false
     this.drag_start = createVector(0,0);
@@ -44,6 +43,7 @@ function Orb(sound_filename, num_drops, color, scale) {
 
 
     
+
     /// Paint Orb ///
     this.displayOrb = function(){
 	
@@ -100,7 +100,8 @@ function Orb(sound_filename, num_drops, color, scale) {
     /// For Grabbing the orb ///
     this.isHooked = function() {
 	var eps = this.drop_D / 2 
-	var dist2_center = p5.Vector.dist(this.center,createVector(mouseX,mouseY));
+	var dist2_center = p5.Vector.dist(createVector(this.default_x, this.default_y),
+					  createVector(mouseX,mouseY));
 	// Grab at edges but not at center of drop
 	if ( abs(dist2_center - this.orb_D / 2) < eps && abs(dist2_center - this.orb_D / 2) > eps / 2 )
 	    return true;
@@ -111,7 +112,7 @@ function Orb(sound_filename, num_drops, color, scale) {
     this.drag = function() {
 	if (this.hooked) {
 	    var translation = createVector(mouseX,mouseY).sub(this.drag_start);
-	    this.center = createVector(width/2,height/2).add(translation);
+	    this.center = createVector(this.default_x,this.default_y).add(translation);
 	}
     };
 
@@ -123,7 +124,6 @@ function Orb(sound_filename, num_drops, color, scale) {
 	for ( var i = 0; i <= this.num_drops; i++) {
 	    if ( this.drop_pos[i].dist(createVector(x,y)) < eps) {
 		this.drops[i]['active'] = ! this.drops[i]['active']
-		console.log(x,y)
 	    }
 	}
     };
@@ -133,11 +133,14 @@ function Orb(sound_filename, num_drops, color, scale) {
 	this.drag_start = createVector(0,0);
 				       
 	for (var i = 0; i <=num_drops; i++) {
-    	    this.drop_pos[i] = (createVector(this.orb_rad * cos(TWO_PI / num_drops * i),
-    					     this.orb_rad * sin(TWO_PI / num_drops * i)).add(this.center));
+    	    this.drop_pos[i] = createVector(this.orb_rad * cos(TWO_PI / num_drops * i),
+    					    this.orb_rad * sin(TWO_PI / num_drops * i))
+		.add(
+		    
+		    createVector(this.default_x, this.default_y));
 	}
     };
-    
+
     /// Set Orb's center ///
     this.setCenter = function (x, y) {
 	this.center = createVector(x,y);
