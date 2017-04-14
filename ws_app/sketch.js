@@ -132,6 +132,32 @@ function draw() {
 	flyer.displayFlyer();
     }
 
+    // Highlight when hovering over option
+    for (let tile of drum_options['left_column']) {
+	if (abs(mouseX-tile.x) <= base_tile*0.8 && abs(mouseY-tile.y) <=base_tile*0.8){
+	    noFill();
+	    stroke(colors.white);
+	    strokeWeight(4);
+	    rect(tile.x - small*base_tile/2,
+		 tile.y - small*base_tile/2,
+		 small*base_tile,
+		 small*base_tile,
+		 base_tile/2);
+	}
+    }
+    for (let tile of drum_options['right_column']) {
+	if (abs(mouseX-tile.x) <= base_tile*0.8 && abs(mouseY-tile.y) <=base_tile*0.8){
+	    noFill();	    
+	    stroke(colors.white);
+	    strokeWeight(4);	    
+	    rect(tile.x - small*base_tile/2,
+		 tile.y - small*base_tile/2,
+		 small*base_tile,
+		 small*base_tile,
+		 base_tile/2);		 
+	}
+    }
+
 };
 
 // function swapOrbs() {
