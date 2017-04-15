@@ -17,10 +17,10 @@ colors = { red : "#F44336",
 	   yellow: "#FFEB3B",
 	   amber: "#FFC107",
 	   burnt_orange: "#FF9800",
+	   grey: "#607D8B",	   
 	   orange: "#FF5722",
 	   black: "#000000",
 	   white: "#FFFFFF",
-	   grey: "#607D8B",
 	 };
 
 
@@ -46,14 +46,6 @@ drum_sounds = {
 color_kys = Object.keys(colors);
 drum_kys = Object.keys(drum_sounds);
 
-// Declare objects
-var flyers = []; 
-var orbs = [];
-
-// Time control
-var fps = 60;       // Frames per second
-var beat_time = 3;  // beat every n frames
-
 // Layout
 var base_tile = 64;
 var large = 10;
@@ -63,19 +55,32 @@ var canvas_width = large*base_tile + 2*buffer + 2 * small*base_tile;
 var canvas_height = small*base_tile * Math.ceil(drum_kys.length/2);
 var main_height = main_width = large*base_tile;
 
-var drum_options = { 'left_column' : [], 'right_column' : [] };
+// Declare objects
+var flyers = []; 
+var orbs = [];
+var orb_centers = [];
 
+
+// Main sector centers
+for (var i=0; i<3; i++)
+    orb_centers.push({'x': main_width/2, 'y' : main_height/2});
+
+// Drum array centers left column		     
 for (var i = 0; i <= Math.ceil(drum_kys.length/2); i++) {
 
-    drum_options['left_column'][i]  = { 'x' : main_width + small*base_tile/2,
-					'y' : small*base_tile/2  + i * small*base_tile,
-					'empty' : true };
-    
-    drum_options['right_column'][i] = { 'x' : main_width + +2*buffer +small*base_tile/2 + base_tile,
-					'y' : small*base_tile/2  + i * small*base_tile,
-					'empty' : true };
+    orb_centers.push({ 'x' : main_width + small*base_tile/2,
+		       'y' : small*base_tile/2  + i * small*base_tile});
+}
+// Drum array centers right column
+for (var i = 0; i <= Math.ceil(drum_kys.length/2); i++) {
+			 
+    orb_centers.push({ 'x' : main_width + +2*buffer +small*base_tile/2 + base_tile,
+		       'y' : small*base_tile/2  + i * small*base_tile});
 }
 
+// Time control
+var fps = 60;       // Frames per second
+var beat_time = 6;  // beat every n frames
 
 //////////////////////////////////
 // Initialize sketch 
@@ -88,31 +93,22 @@ function setup() {
     flyers.push(new Flyer(colors[color_kys[randInt(0,17)]], main_width));
     flyers.push(new Flyer(colors[color_kys[randInt(0,17)]], main_width));
     
-    // Main sector Orbs
+    // Main sector Orb Setup
+    var num_drops = 24;
     var main_x = main_width/2;
     var main_y = main_height/2;
-    orbs.push(new Orb(drum_sounds['beat1'],  24, main_x, main_y, large*base_tile, 0.5, colors.burnt_orange));
-    orbs.push(new Orb(drum_sounds['snare2'], 24, main_x, main_y, large*base_tile, 0.35, colors.light_blue));
-    orbs.push(new Orb(drum_sounds['clap'],   24, main_x, main_y, large*base_tile, 0.22, colors.lime));
+    orbs.push(new Orb(drum_sounds['beat1'],  num_drops, main_x, main_y, large*base_tile, 0.5, colors.burnt_orange));
+    orbs.push(new Orb(drum_sounds['snare2'], num_drops/4*3, main_x, main_y, large*base_tile, 0.35, colors.light_blue));
+    orbs.push(new Orb(drum_sounds['clap'],   num_drops/2, main_x, main_y, large*base_tile, 0.22, colors.lime));
 
-    // Push orb options left column
-    for (let tile of drum_options['left_column']) {
-    	orbs.push(new Orb(drum_sounds['beat1'],
-			  24,
-    			  tile.x, tile.y,
-			  small*base_tile,
-			  0.5,
-    			  colors[color_kys[randInt(0,17)]]));
-    }
-
-    // Push options right column
-    for (let tile of drum_options['right_column']) {
-    	orbs.push(new Orb(drum_sounds['beat1'],
-			  24,
-    			  tile.x, tile.y,
-			  small*base_tile,
-			  0.5,
-    			  colors[color_kys[randInt(0,17)]]));
+    // Drum options columns setup
+    for (var i=3; i<drum_kys.length; i++){
+    	orbs.push(new Orb(drum_sounds[drum_kys[i]],
+    			  num_drops,
+    			  orb_centers[i].x, orb_centers[i].y,
+    			  small*base_tile,
+    			  0.5,
+    			  colors[color_kys[randInt(0,15)]]));
     }
 
 };
@@ -132,8 +128,9 @@ function draw() {
 	flyer.displayFlyer();
     }
 
-    // Highlight when hovering over option
-    for (let tile of drum_options['left_column']) {
+    // Highlight when hovering over drum option tile
+    for (var i=3; i<orb_centers.length; i++) {
+	var tile = orb_centers[i];
 	if (abs(mouseX-tile.x) <= base_tile*0.8 && abs(mouseY-tile.y) <=base_tile*0.8){
 	    noFill();
 	    stroke(colors.white);
@@ -143,18 +140,6 @@ function draw() {
 		 small*base_tile,
 		 small*base_tile,
 		 base_tile/2);
-	}
-    }
-    for (let tile of drum_options['right_column']) {
-	if (abs(mouseX-tile.x) <= base_tile*0.8 && abs(mouseY-tile.y) <=base_tile*0.8){
-	    noFill();	    
-	    stroke(colors.white);
-	    strokeWeight(4);	    
-	    rect(tile.x - small*base_tile/2,
-		 tile.y - small*base_tile/2,
-		 small*base_tile,
-		 small*base_tile,
-		 base_tile/2);		 
 	}
     }
 
