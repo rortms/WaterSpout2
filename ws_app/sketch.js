@@ -70,13 +70,13 @@ for (var i = 0; i <= Math.ceil(drum_kys.length/2); i++) {
 
     orb_centers.push({ 'x' : main_width + small*base_tile/2,
 		       'y' : small*base_tile/2  + i * small*base_tile});
-}
+    
 // Drum array centers right column
-for (var i = 0; i <= Math.ceil(drum_kys.length/2); i++) {
-			 
     orb_centers.push({ 'x' : main_width + +2*buffer +small*base_tile/2 + base_tile,
-		       'y' : small*base_tile/2  + i * small*base_tile});
+		       'y' : small*base_tile/2  + i * small*base_tile});    
 }
+
+
 
 // Time control
 var fps = 60;       // Frames per second
