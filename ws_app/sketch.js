@@ -236,6 +236,9 @@ function swapOrbs(i,j) {
 			  orb_i_sector_size,
 			  orb_i_scale,
 			  orbs[j].color)
+	
+	// Sync timing between orbs
+	orbs[j].drop_in_beat = orbs[i].drop_in_beat;
     }
 
 
