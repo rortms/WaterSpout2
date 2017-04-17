@@ -65,9 +65,10 @@ var orb_centers = [];
 for (var i=0; i<3; i++)
     orb_centers.push({'x': main_width/2, 'y' : main_height/2});
 
-// Drum array centers left column		     
-for (var i = 0; i <= Math.ceil(drum_kys.length/2); i++) {
 
+for (var i = 0; i <= Math.ceil(drum_kys.length/2); i++) {
+    
+// Drum array centers left column		     
     orb_centers.push({ 'x' : main_width + small*base_tile/2,
 		       'y' : small*base_tile/2  + i * small*base_tile});
     
@@ -75,7 +76,6 @@ for (var i = 0; i <= Math.ceil(drum_kys.length/2); i++) {
     orb_centers.push({ 'x' : main_width + +2*buffer +small*base_tile/2 + base_tile,
 		       'y' : small*base_tile/2  + i * small*base_tile});    
 }
-
 
 
 // Time control
@@ -95,23 +95,24 @@ function setup() {
     
     // Main sector Orb Setup
     var num_drops = 24;
-    var main_x = main_width/2;
-    var main_y = main_height/2;
-    orbs.push(new Orb(drum_sounds['beat1'],  num_drops, main_x, main_y, large*base_tile, 0.5, colors.burnt_orange));
-    orbs.push(new Orb(drum_sounds['snare2'], num_drops/4*3, main_x, main_y, large*base_tile, 0.35, colors.light_blue));
-    orbs.push(new Orb(drum_sounds['clap'],   num_drops/2, main_x, main_y, large*base_tile, 0.22, colors.lime));
+    var main_pos = createVector(main_width/2, main_height/2);
+    orbs.push(new Orb(drum_sounds['beat1'],  num_drops, main_pos, large*base_tile, 0.5, colors.burnt_orange));
+    orbs.push(new Orb(drum_sounds['snare2'], num_drops/4*3, main_pos, large*base_tile, 0.35, colors.light_blue));
+    orbs.push(new Orb(drum_sounds['clap'],   num_drops/2, main_pos, large*base_tile, 0.22, colors.lime));
 
     // Drum options columns setup
     for (var i=3; i<drum_kys.length; i++){
     	orbs.push(new Orb(drum_sounds[drum_kys[i]],
     			  num_drops,
-    			  orb_centers[i].x, orb_centers[i].y,
+    			  createVector(orb_centers[i].x, orb_centers[i].y),
     			  small*base_tile,
     			  0.5,
     			  colors[color_kys[randInt(0,15)]]));
     }
+    
 
 };
+
 
 //////////////////////////////////
 // Animate sketch
@@ -145,10 +146,6 @@ function draw() {
 
 };
 
-// function swapOrbs() {
-    
-// };
-
 
 //////////////////////////////////
 // Handle User Interactions
@@ -178,8 +175,96 @@ function mouseClicked() {
 };
 
 function mouseReleased() {
+    // Swapping logic
+    for (var i=0; i < orbs.length; i++)
+	for(var j=0; j < orbs.length; j++){
+	    var orb2swap2 = orb_centers[j]
+	    
+	    if ( i != j  && orbs[i].hooked &&
+		 mouseX > large*base_tile && // Swap only with tile columns
+		 abs(mouseX - orb2swap2.x) < base_tile*0.8 &&
+		 abs(mouseY - orb2swap2.y) < base_tile*0.8 ){
+		
+
+		swapOrbs(i,j);
+		console.log("SwapEm");
+
+		console.log("Ready for next swap\n\n");
+	    }
+	}
+    
+    // Always reset positions after dragg release
     for (let orb of orbs) {
 	orb.hooked = false;
-	orb.resetOrb();	
+	orb.resetOrb();
     }
 };
+
+/// Support Functions
+
+// Swap orbs
+function swapOrbs(i,j) {
+    
+    if (j < 3) // Cannot swap TO main sector 
+	return
+    
+    // If orbs to swap are compatible 
+    if ( orbs[i].num_drops == orbs[j].num_drops) {
+	
+	//If dragging Orb from main sector swap dimensions
+	if  (i == 0) {
+	    var orb_i_sector_size = orbs[i].ss;
+	    var orb_i_scale = orbs[i].scale;
+	    orbs[i].reDrawDrops(orbs[j].ss, orbs[j].scale);
+	    orbs[j].reDrawDrops(orb_i_sector_size, orb_i_scale);
+	}
+
+		
+    } else { // If orbs differ in number of drops transform
+	
+	var new_drop_number = orbs[i].num_drops;
+	var orb_i_sector_size = orbs[i].ss;
+	var orb_i_scale = orbs[i].scale;
+	
+	// If Dragging Orb from main sector swap dimensions
+	if (i < 3) 
+	    orbs[i].reDrawDrops(orbs[j].ss, orbs[j].scale);
+	
+	orbs[j] = new Orb(orbs[j].sf,
+			  new_drop_number,
+			  orbs[j].default_pos,
+			  orb_i_sector_size,
+			  orb_i_scale,
+			  orbs[j].color)
+    }
+
+
+    // Swap center positions
+    var orb_i_default_pos = createVector(orbs[i].default_pos.x,
+					 orbs[i].default_pos.y);
+    
+    orbs[i].default_pos = createVector(orbs[j].default_pos.x,
+				       orbs[j].default_pos.y);
+    orbs[i].center = createVector(orbs[j].default_pos.x,
+				  orbs[j].default_pos.y);
+
+    orbs[j].default_pos = orb_i_default_pos;
+    orbs[j].default_pos = createVector(orb_i_default_pos.x,
+				       orb_i_default_pos.y);    
+    
+    // Finally swap orb references in array
+    orbs.swap(i,j);
+    
+};
+
+// // Clone Orb
+// function cloneOrb(index) {
+//     return new Orb(orbs[index].sf,
+// 		   orbs[index].num_drops,
+// 		   orbs[index].default_pos,
+// 		   orbs[index].ss,
+// 		   orbs[index].scale,
+// 		   orbs[index].color)
+
+// };
+    
