@@ -101,7 +101,7 @@ function Orb(sound_filename, num_drops, sector_pos, sector_size, scale, color) {
 
     /// For Grabbing the orb ///
     this.isHooked = function() {
-	var eps = this.drop_D / 2 
+	var eps = this.drop_D / 2;
 	var dist2_center = p5.Vector.dist(this.default_pos, createVector(mouseX,mouseY));
 	// Grab at edges but not at center of drop
 	if ( abs(dist2_center - this.orb_D / 2) < eps && abs(dist2_center - this.orb_D / 2) > eps / 2 )
