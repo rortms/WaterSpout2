@@ -49,9 +49,9 @@ drum_kys = Object.keys(drum_sounds);
 // Layout
 var base_tile = 64;
 var large = 10;
-var small = 3;
-var buffer = base_tile;
-var canvas_width = large*base_tile + 2*buffer + 2 * small*base_tile;
+var small = 4;
+var buffer = base_tile*5/4;
+var canvas_width = large*base_tile + buffer + 2 * small*base_tile;
 var canvas_height = small*base_tile * Math.ceil(drum_kys.length/2);
 var main_height = main_width = large*base_tile;
 
@@ -69,11 +69,11 @@ for (var i=0; i<3; i++)
 for (var i = 0; i <= Math.ceil(drum_kys.length/2); i++) {
     
 // Drum array centers left column		     
-    orb_centers.push({ 'x' : main_width + small*base_tile/2,
+    orb_centers.push({ 'x' : main_width + buffer + small*base_tile/2,
 		       'y' : small*base_tile/2  + i * small*base_tile});
     
 // Drum array centers right column
-    orb_centers.push({ 'x' : main_width + +2*buffer +small*base_tile/2 + base_tile,
+    orb_centers.push({ 'x' : main_width + 3*buffer +small*base_tile/2 + base_tile,
 		       'y' : small*base_tile/2  + i * small*base_tile});    
 }
 
@@ -96,8 +96,8 @@ function setup() {
     // Main sector Orb Setup
     var num_drops = 24;
     var main_pos = createVector(main_width/2, main_height/2);
-    orbs.push(new Orb(drum_sounds['beat1'],  num_drops, main_pos, large*base_tile, 0.5, colors.burnt_orange));
-    orbs.push(new Orb(drum_sounds['snare2'], num_drops/4*3, main_pos, large*base_tile, 0.35, colors.light_blue));
+    orbs.push(new Orb(drum_sounds['beat1'],  num_drops, main_pos, large*base_tile, 0.6, colors.burnt_orange));
+    orbs.push(new Orb(drum_sounds['snare2'], num_drops/4*3, main_pos, large*base_tile, 0.4, colors.light_blue));
     orbs.push(new Orb(drum_sounds['clap'],   num_drops/2, main_pos, large*base_tile, 0.22, colors.lime));
 
     // Drum options columns setup
@@ -236,6 +236,9 @@ function swapOrbs(i,j) {
 			  orb_i_sector_size,
 			  orb_i_scale,
 			  orbs[j].color)
+	
+	// Sync timing between orbs
+	orbs[j].drop_in_beat = orbs[i].drop_in_beat;
     }
 
 
